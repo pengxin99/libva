@@ -684,6 +684,8 @@ const char *vaErrorStr(VAStatus error_status)
         return "an unsupported memory type was supplied";
     case VA_STATUS_ERROR_NOT_ENOUGH_BUFFER:
         return "allocated memory size is not enough for input or output";
+    case VA_STATUS_ERROR_RESET:
+        return "HW reset happended";
     case VA_STATUS_ERROR_UNKNOWN:
         return "unknown libva error";
     }

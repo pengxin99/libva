@@ -243,6 +243,7 @@ const char *vaStatusStr(VAStatus status)
         TOSTR(VA_STATUS_ERROR_HW_BUSY);
         TOSTR(VA_STATUS_ERROR_UNSUPPORTED_MEMORY_TYPE);
         TOSTR(VA_STATUS_ERROR_NOT_ENOUGH_BUFFER);
+        TOSTR(VA_STATUS_ERROR_RESET);
         TOSTR(VA_STATUS_ERROR_UNKNOWN);
     default:
         break;

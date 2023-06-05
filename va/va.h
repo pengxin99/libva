@@ -305,7 +305,9 @@ typedef int VAStatus;   /** Return status type from functions */
 #define VA_STATUS_ERROR_NOT_ENOUGH_BUFFER       0x00000025
 /** \brief Indicate an operation isn't completed because time-out interval elapsed. */
 #define VA_STATUS_ERROR_TIMEDOUT                0x00000026
-#define VA_STATUS_ERROR_UNKNOWN         0xFFFFFFFF
+/** \brief Indicate HW reset has happended, then continue the subsequent work. */
+#define VA_STATUS_ERROR_RESET                   0x00000027
+#define VA_STATUS_ERROR_UNKNOWN                 0xFFFFFFFF
 
 /**
  * 1. De-interlacing flags for vaPutSurface()
@@ -4201,11 +4203,17 @@ typedef enum {
 } VADecodeErrorType;
 
 /**
- * Client calls vaQuerySurfaceError with VA_STATUS_ERROR_DECODING_ERROR, server side returns
+ * Client calls vaQuerySurfaceError() with the VAStatus obtained from vaSyncSurface(), server side returns
  * an array of structure VASurfaceDecodeMBErrors, and the array is terminated by setting status=-1
 */
 typedef struct _VASurfaceDecodeMBErrors {
-    int32_t status; /* 1 if hardware has returned detailed info below, -1 means this record is invalid */
+    /**
+     * Status reported by server side:
+     * 1 if hardware has returned detailed info below;
+     * -1 means this record is invalid;
+     * VA_STATUS_ERROR_RESET means reset happened in the server side.
+     */
+    int32_t status;
     uint32_t start_mb; /* start mb address with errors */
     uint32_t end_mb;  /* end mb address with errors */
     VADecodeErrorType decode_error_type;
@@ -4215,9 +4223,9 @@ typedef struct _VASurfaceDecodeMBErrors {
 } VASurfaceDecodeMBErrors;
 
 /**
- * After the application gets VA_STATUS_ERROR_DECODING_ERROR after calling vaSyncSurface(),
- * it can call vaQuerySurfaceError to find out further details on the particular error.
- * VA_STATUS_ERROR_DECODING_ERROR should be passed in as "error_status",
+ * After the application gets the VAStatus after calling vaSyncSurface(), and an error may occur,
+ * then need to call vaQuerySurfaceError() to find out further details on the particular VAStatus.
+ * The VAStatus obtained from vaSyncSurface() should be passed in as "error_status",
  * upon the return, error_info will point to an array of _VASurfaceDecodeMBErrors structure,
  * which is allocated and filled by libVA with detailed information on the missing or error macroblocks.
  * The array is terminated if "status==-1" is detected.
