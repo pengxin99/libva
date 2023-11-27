@@ -4187,6 +4187,12 @@ Synchronization
  * This function blocks until all pending operations on the render target
  * have been completed.  Upon return it is safe to use the render target for a
  * different picture.
+ *
+ * Possible errors:
+ * - \ref VA_STATUS_ERROR_DECODING_ERROR: This error is triggered when encountering
+ *   Macroblock (MB) errors with non-conformance input clips during the decoding process.
+ *   Application can proceed with the subsequent frames, it is advised that the application
+ *   be aware of potential corruption in the output.
  */
 VAStatus vaSyncSurface(
     VADisplay dpy,
