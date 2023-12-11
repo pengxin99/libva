@@ -4189,6 +4189,13 @@ Synchronization
  * different picture.
  *
  * Possible errors:
+ * - \ref VA_STATUS_ERROR_INVALID_CONTEXT: an invalid context was supplied
+ * - \ref VA_STATUS_ERROR_INVALID_SURFACE: an invalid surface was supplied
+ *
+ * Possible errors during decoding:
+ * - \ref VA_STATUS_ERROR_OPERATION_FAILED: Get status report fail.
+ * - \ref VA_STATUS_ERROR_HW_BUSY: Synchronization is still in progress, client should call
+ *   the function again to complete synchronization.
  * - \ref VA_STATUS_ERROR_DECODING_ERROR: This error is triggered when encountering
  *   Macroblock (MB) errors with non-conformance input clips during the decoding process.
  *   Application can proceed with the subsequent frames, it is advised that the application
